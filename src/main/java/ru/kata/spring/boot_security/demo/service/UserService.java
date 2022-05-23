@@ -1,47 +1,49 @@
 package ru.kata.spring.boot_security.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
+    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    public User findById(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
-
-    public List<User> findAll() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
-
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public Set<Role> getAllRoles() {
+        return new HashSet<>(roleRepository.findAll());
     }
 
-    public void deleteById(Long id) {
+    public void saveOrUpdate(User user, Set<Role> roles) {
+        user.setRoles(roles);
+        userRepository.save(user);
+    }
+
+    public void delete(Long id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        User user = userRepository.findByName(name);
-        if (user == null) {
-            throw new UsernameNotFoundException("Could not find user");
-        }
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        final User user = userRepository.findUserByName(username);
         return user;
+    }
+
+    public User findUserById (Long id) {
+        return userRepository.getById(id);
     }
 }
