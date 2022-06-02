@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,11 +15,15 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+
+    public UserService(RoleRepository roleRepository, UserRepository userRepository) {
+        this.roleRepository = roleRepository;
+        this.userRepository = userRepository;
+    }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -29,6 +32,7 @@ public class UserService implements UserDetailsService {
         return new HashSet<>(roleRepository.findAll());
     }
 
+    @Transactional
     public void saveOrUpdate(User user, Set<Role> roles) {
         user.setRoles(roles);
         userRepository.save(user);
