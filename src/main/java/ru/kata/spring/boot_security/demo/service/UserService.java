@@ -10,6 +10,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,6 +34,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    @Transactional
     public void delete(Long id) {
         userRepository.deleteById(id);
     }
@@ -45,5 +47,9 @@ public class UserService implements UserDetailsService {
 
     public User findUserById (Long id) {
         return userRepository.getById(id);
+    }
+
+    public void addOrUpdateUser(User user) {
+        userRepository.save(user);
     }
 }

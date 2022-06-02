@@ -34,19 +34,34 @@ public class MyController {
         return "/admin";
     }
 
-    @PostMapping("admin/new")
-    public String addUser(User user, @RequestParam("listRoles") Set<Role> roles) {
-        userService.saveOrUpdate(user, roles);
+    @GetMapping("/admin/new")
+    public String createUserForm(@ModelAttribute("user") User user, Model model) {
+        Set<Role> listRoles = userService.getAllRoles();
+        model.addAttribute("listRoles", listRoles);
+        return "/new";
+    }
+
+    @PostMapping("/admin/new")
+    public String createUser(@ModelAttribute("user") User user) {
+        userService.addOrUpdateUser(user);
         return "redirect:/admin";
     }
 
-    @PostMapping("admin/edit")
-    public String update(@ModelAttribute("user") User user, @RequestParam("listRoles") Set<Role> roles) {
-        userService.saveOrUpdate(user, roles);
+    @GetMapping(value = "/admin/update-user/{id}")
+    public String formUpdateUser(@PathVariable Long id, Model model) {
+        Set<Role> listRoles = userService.getAllRoles();
+        model.addAttribute("user", userService.findUserById(id));
+        model.addAttribute("listRoles", listRoles);
+        return "/update-user";
+    }
+
+    @PostMapping(value = "/admin/update-user/{id}")
+    public String updateUser(@ModelAttribute("user") User user) {
+        userService.addOrUpdateUser(user);
         return "redirect:/admin";
     }
 
-    @DeleteMapping("admin/delete/{id}")
+    @GetMapping("/admin/delete/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
         userService.delete(id);
         return "redirect:/admin";

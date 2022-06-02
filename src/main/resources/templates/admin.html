@@ -22,13 +22,13 @@
                 <td th:text="${user.id}"></td>
                 <td th:text="${user.name}"></td>
                 <td th:text="${user.email}"></td>
-                <td><a th:href="@{admin/edit/{id}(id=${user.id})}">Edit</a></td>
-                <td><a th:href="@{user-delete/{id}(id=${user.id})}">Delete</a></td>
+                <td><a th:href="@{admin/update-user/{id}(id=${user.id})}">Edit</a></td>
+                <td><a th:href="@{admin/delete/{id}(id=${user.id})}">Delete</a></td>
             </tr>
             </tbody>
         </table>
     </div>
-    <p><a href="/user-create">Create user</a></p>
+    <p><a href="/admin/new">Create user</a></p>
     <form th:action="@{/logout}" method="post">
         <button type="submit">Logout</button>
     </form>
