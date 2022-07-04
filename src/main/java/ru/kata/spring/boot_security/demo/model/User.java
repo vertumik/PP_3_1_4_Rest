@@ -16,10 +16,10 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "name", nullable = false)
-    private String name;
+    private String username;
 
-    @Column(name = "email", nullable = false)
-    private String email;
+    @Column(name = "age", nullable = false)
+    private int age;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -34,10 +34,10 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String email, String password, Set<Role> roles) {
+    public User(String name, int age, String password, Set<Role> roles) {
         super();
-        this.name = name;
-        this.email = email;
+        this.username = username;
+        this.age = age;
         this.password = password;
         this.roles = roles;
     }
@@ -54,19 +54,19 @@ public class User implements UserDetails {
     }
 
     public String getName() {
-        return name;
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getEmail() {
-        return email;
+    public int getAge() {
+        return age;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setAge(int age) {
+        this.age = age;
     }
 
 
@@ -82,7 +82,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return username;
     }
 
     @Override
@@ -121,8 +121,8 @@ public class User implements UserDetails {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
+                ", name='" + username + '\'' +
+                ", age='" + age + '\'' +
                 ", password='" + password + '\'' +
                 ", roles=" + roles +
                 '}';
