@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 public class AdminRestController {
 
     private final UserService userService;
@@ -24,17 +24,17 @@ public class AdminRestController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public List<User> showAllUsers() {
         return userService.getAllUser();
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public User getUser(@PathVariable int id) {
         return userService.getUserById(id);
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public User addNew(@RequestBody User user) {
         List<Role> listroles = new ArrayList<>();
         for (Role role : user.getRoles()) {
@@ -45,7 +45,7 @@ public class AdminRestController {
         return user;
     }
 
-    @PatchMapping("/users/{id}")
+    @PatchMapping("/{id}")
     public User update(@RequestBody User user, @PathVariable("id") int id) {
         List<Role> listroles = new ArrayList<>();
         for (Role role : user.getRoles()) {
@@ -57,12 +57,12 @@ public class AdminRestController {
         return updatedUser;
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") int id) {
         userService.deleteUserById(id);
     }
 
-    @GetMapping("/users/current_user")
+    @GetMapping("/current_user")
     public User showCurrentUser(Principal principal) {
         return userService.getUserByName(principal.getName());
     }
