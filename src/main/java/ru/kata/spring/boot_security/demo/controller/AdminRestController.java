@@ -37,14 +37,14 @@ public class AdminRestController {
     }
 
     @PostMapping
-    public User addNew(@RequestBody User user) {
+    public ResponseEntity<User> addNew(@RequestBody User user) {
         List<Role> listroles = new ArrayList<>();
         for (Role role : user.getRoles()) {
             listroles.add(roleService.getByName(role.getName()));
         }
         user.setRoles(listroles);
         userService.addUser(user);
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
@@ -64,7 +64,7 @@ public class AdminRestController {
     }
 
     @GetMapping("/current_user")
-    public User showCurrentUser(Principal principal) {
-        return userService.getUserByName(principal.getName());
+    public ResponseEntity<User> showCurrentUser(Principal principal) {
+        return new ResponseEntity<>(userService.getUserByName(principal.getName()), HttpStatus.OK);
     }
 }
