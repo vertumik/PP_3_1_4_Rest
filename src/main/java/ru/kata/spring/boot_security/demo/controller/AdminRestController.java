@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,20 +19,19 @@ public class AdminRestController {
     private final UserService userService;
     private final RoleService roleService;
 
-    @Autowired
     public AdminRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
 
     @GetMapping
-    public List<User> showAllUsers() {
-        return userService.getAllUser();
+    public ResponseEntity<List<User>> showAllUsers() {
+        return new ResponseEntity<>(userService.getAllUser(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable int id) {
-        return userService.getUserById(id);
+    public ResponseEntity<User> getUser(@PathVariable int id) {
+        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
     @PostMapping
@@ -59,8 +57,9 @@ public class AdminRestController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") int id) {
+    public ResponseEntity<?> delete(@PathVariable("id") int id) {
         userService.deleteUserById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/current_user")
